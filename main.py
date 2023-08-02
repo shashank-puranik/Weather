@@ -22,18 +22,6 @@ def extractWeatherData(url):
     print("Data retrieved successfully.")
     return json_obj['SiteRep']['DV']['Location']
 
-def extractSiteData(url):
-    response_sites = urllib.request.urlopen(url)
-    try:
-        print("Connecting to URL:", url)
-        utf8_dataa = response_sites.read()
-        print("URL connected successfully.")
-    except Exception as exn:
-        logging.error("The error is {} : {}".format(exn.__class__.__name__, exn))
-
-    json_object = json.loads(utf8_dataa.decode("utf-8"))
-    return json_object['SiteRep']['DV']
-
 def normaliseaspandasdf(json_obj, location_key=config.locationkeys()):
     return json_normalize(json_obj, record_path=["Period", "Rep"], meta=location_key)
 
@@ -48,16 +36,14 @@ def extractweatherdatadaily(pandasdf):
 
 def main():
     # Set up the URL for daily weather data
-    #urldaily = config.url()
-    sites = config.url()
+    urldaily = config.url()
     # Call the extractWeatherData function and get the weather data
-    #weather_data = extractWeatherData(urldaily)
-    site_info = extractSiteData(sites)
+    weather_data = extractWeatherData(urldaily)
     # Print the weather_data
-    #normalised_daily = normaliseaspandasdf(weather_data)
-    #dailyweatherdata = extractweatherdatadaily(normalised_daily)
-    #dailyweatherdata.to_csv("DailyWeatherData_{}.csv".format(dt.datetime.today().strftime('%Y-%m-%d')), header=True, index=False, encoding='utf-8')
-    df = pd.DataFrame(site_info)
+    normalised_daily = normaliseaspandasdf(weather_data)
+    dailyweatherdata = extractweatherdatadaily(normalised_daily)
+    dailyweatherdata.to_csv("DailyWeatherData_{}.csv".format(dt.datetime.today().strftime('%Y-%m-%d')), header=True, index=False, encoding='utf-8')
+    df = pd.DataFrame(weather_data)
     print(df)
 if __name__ == '__main__':
     main()

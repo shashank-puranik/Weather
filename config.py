@@ -1,7 +1,7 @@
 def url():
     sites = "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/datatype/sitelist?key=137a0d7f-fe44-4086-bcec-a5135a5e40a0"
     urldaily = "http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/all?res=daily&key=137a0d7f-fe44-4086-bcec-a5135a5e40a0"
-    return urldaily
+    return urldaily,sites
 
 def sitemapping():
   return {
